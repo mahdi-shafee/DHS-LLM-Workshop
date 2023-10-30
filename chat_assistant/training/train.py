@@ -179,14 +179,15 @@ def main(args):
     )
 
     # model
-    processor = AutoProcessor.from_pretrained("HuggingFaceM4/idefics-9b-instruct")
-    train_ds, eval_ds = create_datasets(processor, args)
     print('Loadfing model...')
     model, peft_config, processor = create_and_prepare_model(args)
     model.config.use_cache = False
 
     # datasets
+    print('Loading dataset...')
     train_ds, eval_ds = create_datasets(processor, args)
+    print(train_ds[0])
+    print(1/0)
 
     # trainer
     trainer = Trainer(model=model, args=training_arguments, train_dataset=train_dataset, eval_dataset=eval_dataset)
