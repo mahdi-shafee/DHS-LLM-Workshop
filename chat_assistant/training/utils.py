@@ -42,7 +42,7 @@ class SaveDeepSpeedPeftModelCallback(TrainerCallback):
 
 
 
-def create_datasets(tokenizer, args, processor):
+def create_datasets(processor, args):
     def convert_to_rgb(image):
         if image.mode == "RGB":
             return image
