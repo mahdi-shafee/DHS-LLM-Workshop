@@ -180,7 +180,7 @@ def main(args):
 
     # model
     processor = AutoProcessor.from_pretrained("HuggingFaceM4/idefics-9b-instruct")
-    train_ds, eval_ds = create_datasets(tokenizer, args, processor)
+    train_ds, eval_ds = create_datasets(processor, args)
     print('Loadfing model...')
     model, peft_config, processor = create_and_prepare_model(args)
     model.config.use_cache = False
