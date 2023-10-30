@@ -17,7 +17,7 @@ import os
 import subprocess
 from typing import Optional
 
-from transformers import HfArgumentParser, TrainingArguments, Trainer
+from transformers import HfArgumentParser, TrainingArguments, Trainer, AutoProcessor
 from utils import *
 
 ########################################################################
@@ -60,6 +60,10 @@ class ScriptArguments:
         },
     )
     dataset_name: Optional[str] = field(
+        default="timdettmers/openassistant-guanaco",
+        metadata={"help": "The preference dataset to use."},
+    )
+    image_dataset_name: Optional[str] = field(
         default="timdettmers/openassistant-guanaco",
         metadata={"help": "The preference dataset to use."},
     )
@@ -175,12 +179,14 @@ def main(args):
     )
 
     # model
+    processor = AutoProcessor.from_pretrained("HuggingFaceM4/idefics-9b-instruct")
+    train_ds, eval_ds = create_datasets(tokenizer, args, processor)
     print('Loadfing model...')
-    model, peft_config, tokenizer = create_and_prepare_model(args)
+    model, peft_config, processor = create_and_prepare_model(args)
     model.config.use_cache = False
 
     # datasets
-    train_dataset, eval_dataset = create_datasets(tokenizer, args)
+    train_ds, eval_ds = create_datasets(tokenizer, args, processor)
 
     # trainer
     trainer = Trainer(model=model, args=training_arguments, train_dataset=train_dataset, eval_dataset=eval_dataset)
