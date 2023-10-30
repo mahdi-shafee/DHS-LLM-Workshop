@@ -79,27 +79,27 @@ def create_datasets(processor, args):
                 base_image = root_path +  '/' + images[2 * i]
                 personalized_image = root_path +  '/' + images[2 * i + 1]
                 ascii = ord(base_image[-5])
-                #if not os.path.isfile(base_image) or not os.path.isfile(personalized_image):
-                #    with open('/datasets/personalized_data_sd/final/hell.txt', 'a') as f:
-                #        f.write('ga\n')
-                #    continue
+                if not os.path.isfile(base_image) or not os.path.isfile(personalized_image):
+                    with open('/datasets/personalized_data_sd/final/hell.txt', 'a') as f:
+                        f.write('ga\n')
+                    continue
                 if ascii % 2 == 0:
-                    prompt.append(base_image)
+                    prompt.append(Image.open(base_image))
                     prompt.append("User: What is user's score for this image?")
                     prompt.append("<end_of_utterance>")
                     prompt.append("\nAssistant: User's score for this image: -")
     
-                    prompt.append(personalized_image)
+                    prompt.append(Image.open(personalized_image))
                     prompt.append("User: What is user's score for this image?")
                     prompt.append("<end_of_utterance>")
                     prompt.append("\nAssistant: User's score for this image: +")
                 else:
-                    prompt.append(personalized_image)
+                    prompt.append(Image.open(personalized_image))
                     prompt.append("User: What is user's score for this image?")
                     prompt.append("<end_of_utterance>")
                     prompt.append("\nAssistant: User's score for this image: +")
     
-                    prompt.append(base_image)
+                    prompt.append(Image.open(base_image))
                     prompt.append("User: What is user's score for this image?")
                     prompt.append("<end_of_utterance>")
                     prompt.append("\nAssistant: User's score for this image: -")
