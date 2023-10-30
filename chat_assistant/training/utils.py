@@ -11,6 +11,7 @@ from collections import defaultdict
 from datasets import load_dataset, Dataset
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from peft.tuners.lora import LoraLayer
+import torchvision.transforms as transforms
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
