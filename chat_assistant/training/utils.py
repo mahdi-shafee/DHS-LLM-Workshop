@@ -1,6 +1,6 @@
 import random
 import torch
-from transformers import TrainerCallback, TrainingArguments, TrainerState, TrainerControl, IdeficsForVisionText2Text
+from transformers import TrainerCallback, TrainingArguments, TrainerState, TrainerControl, IdeficsForVisionText2Text, AutoProcessor
 from torch.utils.data import IterableDataset
 from datasets import load_dataset
 from tqdm import tqdm
@@ -181,7 +181,7 @@ def create_and_prepare_model(args):
     if args.use_4bit_qunatization or args.use_8bit_qunatization:
         device_map = "auto"  # {"": 0}
 
-    checkpoint = "HuggingFaceM4/idefics-9b-instruct"
+    checkpoint = args.model_name
     model = IdeficsForVisionText2Text.from_pretrained(
         checkpoint,
         load_in_8bit=load_in_8bit,
