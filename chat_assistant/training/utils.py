@@ -1,6 +1,6 @@
 import random
 import torch
-from transformers import TrainerCallback, TrainingArguments, TrainerState, TrainerControl
+from transformers import TrainerCallback, TrainingArguments, TrainerState, TrainerControl, IdeficsForVisionText2Text
 from torch.utils.data import IterableDataset
 from datasets import load_dataset
 from tqdm import tqdm
@@ -181,14 +181,13 @@ def create_and_prepare_model(args):
     if args.use_4bit_qunatization or args.use_8bit_qunatization:
         device_map = "auto"  # {"": 0}
 
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model_name,
+    checkpoint = "HuggingFaceM4/idefics-9b-instruct"
+    model = IdeficsForVisionText2Text.from_pretrained(
+        checkpoint,
         load_in_8bit=load_in_8bit,
         quantization_config=bnb_config,
         device_map=device_map,
         use_cache=not args.use_gradient_checkpointing,
-        trust_remote_code=True,
-        use_flash_attention_2=args.use_flash_attn,
     )
 
     peft_config = None
@@ -210,10 +209,9 @@ def create_and_prepare_model(args):
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
 
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name, trust_remote_code=True)
-    tokenizer.pad_token = tokenizer.eos_token
+    processor = AutoProcessor.from_pretrained(checkpoint)
 
-    return model, peft_config, tokenizer
+    return model, peft_config, processor
 
 
 def peft_module_casting_to_bf16(model, args):
