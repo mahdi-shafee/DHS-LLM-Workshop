@@ -179,7 +179,7 @@ def main(args):
     )
 
     # model
-    print('Loadfing model...')
+    print('Loading model...')
     model, peft_config, processor = create_and_prepare_model(args)
     model.config.use_cache = False
 
