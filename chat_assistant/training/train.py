@@ -188,7 +188,7 @@ def main(args):
     train_ds, eval_ds = create_datasets(processor, args)
 
     # trainer
-    trainer = Trainer(model=model, args=training_arguments, train_dataset=train_dataset, eval_dataset=eval_dataset)
+    trainer = Trainer(model=model, args=training_arguments, train_dataset=train_ds, eval_dataset=eval_ds)
     trainer.accelerator.print(f"{trainer.model}")
     if args.use_peft_lora:
         trainer.model.print_trainable_parameters()
