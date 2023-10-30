@@ -186,8 +186,6 @@ def main(args):
     # datasets
     print('Loading dataset...')
     train_ds, eval_ds = create_datasets(processor, args)
-    print(train_ds[0])
-    print(1/0)
 
     # trainer
     trainer = Trainer(model=model, args=training_arguments, train_dataset=train_dataset, eval_dataset=eval_dataset)
